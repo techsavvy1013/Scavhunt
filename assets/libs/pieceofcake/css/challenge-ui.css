@@ -1,0 +1,83 @@
+.challenge-number{
+    position: relative;
+    padding: 10px;
+} 
+
+.challenge-current{
+    border:3px dotted #2dbba4;
+    border-radius: 10px;
+}
+
+.challenge-past{
+    cursor:pointer;
+}
+
+li.challenge-past:hover{
+    border:3px dotted #d0324b;
+    border-radius: 10px;
+}
+
+li.challenge-number span{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    left: 0px;
+    top: 40%;
+    z-index: 100;
+    font-size: 55pt;
+    font-family : 'Paytone One',sans-serif;
+}
+
+li.challenge-number span.solved{
+    color: #c48460;
+}
+
+li.challenge-number span.not-solved{
+    color: white;
+}
+
+.judged-icon {
+    font-size : 35px;
+    color : #2d45bb !important;
+    cursor : pointer;
+}
+.awaiting-judge-icon {
+    font-size : 35px;
+    color : #e33737 !important;
+    cursor : pointer;
+}
+
+.leaderboard-container {
+    margin-top : 50px;
+}
+.team-leaderboard-container {
+    
+}
+.team-leaderboard-table {
+    margin : auto;
+    border-radius : 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.team-leaderboard-table th {
+    background-color: #009879;
+    color: #ffffff;
+}
+.team-leaderboard-table td, .team-leaderboard-table th {
+    padding : 10px 15px;
+}
+.team-leaderboard-table tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.team-leaderboard-table tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.team-leaderboard-table tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+.team-leaderboard-table tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
