@@ -89,7 +89,7 @@ class Challenge_model extends CI_Model
                 FROM challenge_judge AS ju
                 LEFT JOIN hunt_gamecode AS gm ON ju.gamecode_id = gm.id
                 LEFT JOIN teams ON teams.id = gm.team_id
-                WHERE ju.hunt_id = $huntId
+                WHERE ju.hunt_id = $huntId AND teams.room_id != 0
                 GROUP BY ju.gamecode_id 
                 ORDER BY points DESC
                 LIMIT 0, 10";
@@ -101,7 +101,7 @@ class Challenge_model extends CI_Model
                 FROM teams
                 LEFT JOIN hunt_gamecode AS gm ON teams.id = gm.team_id
                 LEFT JOIN (SELECT * FROM challenge_judge WHERE hunt_id = $huntId) AS ju ON ju.gamecode_id = gm.id
-                WHERE gm.id = $gameCodeId
+                WHERE gm.id = $gameCodeId AND teams.room_id != 0
                 GROUP BY gm.id";
         $curTeamLeaderPoints = $this->db->query($sql1)->row();
         if(!$curTeamLeaderPoints->points)
