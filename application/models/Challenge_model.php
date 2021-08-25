@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Challenge_model extends CI_Model
 {
@@ -11,7 +11,7 @@ class Challenge_model extends CI_Model
     {
         $this->db->where('is_active = 1');
         $this->db->order_by('id', 'ASC');
-        $query = $this->db->get($this->_tablename2);    
+        $query = $this->db->get($this->_tablename2);
         return $query->result();
     }
 
@@ -47,8 +47,8 @@ class Challenge_model extends CI_Model
     }
 
     public function getPhotoVideoChallengesByHunt($huntId)
-    {   
-        $typeIds = array(1,5);
+    {
+        $typeIds = array(1, 5);
         $this->db->where('hunt_id', $huntId);
         $this->db->where_in('chg_type_id', $typeIds);
         $this->db->where('status_id = 1');
@@ -58,8 +58,8 @@ class Challenge_model extends CI_Model
     }
 
     public function getOtherChallengesByHunt($huntId)
-    {   
-        $typeIds = array(2,3,4);
+    {
+        $typeIds = array(2, 3, 4);
         $this->db->where('hunt_id', $huntId);
         $this->db->where_in('chg_type_id', $typeIds);
         $this->db->where('status_id = 1');
@@ -82,11 +82,15 @@ class Challenge_model extends CI_Model
             return NULL;
     }
 
-    public function getLeaderBoardByHunt($huntId, $gameCodeId) {
-        $sql0 = "SELECT gm.team_id,
-                    IF(teams.players_count=1, CONCAT('Room ', teams.room_id), teams.team_name) AS team_name,
-                    SUM(ju.points) AS points
-                FROM challenge_judge AS ju
+    public function getLeaderBoardByHunt($huntId, $gameCodeId)
+    {
+        $selectQuery = "SELECT gm.team_id,
+                        IF(teams.players_count=1, CONCAT('Room ', teams.room_id), teams.team_name) AS team_name,
+                        SUM(ju.points) AS points ";
+        $selectQuery = "SELECT gm.team_id,
+                        CONCAT(teams.team_name, ' - Room ', teams.room_id) AS team_name,
+                        SUM(ju.points) AS points ";
+        $sql0 = $selectQuery . "FROM challenge_judge AS ju
                 LEFT JOIN hunt_gamecode AS gm ON ju.gamecode_id = gm.id
                 LEFT JOIN teams ON teams.id = gm.team_id
                 WHERE ju.hunt_id = $huntId AND teams.room_id != 0
@@ -95,22 +99,20 @@ class Challenge_model extends CI_Model
                 LIMIT 0, 10";
         $result = $this->db->query($sql0)->result();
 
-        $sql1 = "SELECT gm.team_id,
-                    IF(teams.players_count=1, CONCAT('Room ', teams.room_id), teams.team_name) AS team_name,
-                    SUM(ju.points) AS points
-                FROM teams
+        $sql1 = $selectQuery . "FROM teams
                 LEFT JOIN hunt_gamecode AS gm ON teams.id = gm.team_id
                 LEFT JOIN (SELECT * FROM challenge_judge WHERE hunt_id = $huntId) AS ju ON ju.gamecode_id = gm.id
                 WHERE gm.id = $gameCodeId AND teams.room_id != 0
                 GROUP BY gm.id";
         $curTeamLeaderPoints = $this->db->query($sql1)->row();
-        if(!$curTeamLeaderPoints->points)
+        if (!$curTeamLeaderPoints->points)
             $curTeamLeaderPoints->points = 0;
         array_push($result, $curTeamLeaderPoints);
 
         return $result;
     }
-    public function getLeaderBoardByTeam($huntId, $teamId) {
+    public function getLeaderBoardByTeam($huntId, $teamId)
+    {
         $this->db->select("ju.chg_id, ch.chg_name, ch.points, ju.points AS earned_points, ju.status_id");
         $this->db->from("challenge_judge AS ju");
         $this->db->join("challenges AS ch", "ju.chg_id = ch.id", "LEFT");
@@ -120,7 +122,8 @@ class Challenge_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    public function getTotalPointsByHunt($huntId) {
+    public function getTotalPointsByHunt($huntId)
+    {
         $this->db->select("SUM(points) as points");
         $this->db->from("challenges");
         $this->db->where("hunt_id", $huntId);
@@ -128,7 +131,8 @@ class Challenge_model extends CI_Model
 
         return $query->row();
     }
-    public function isJudgeGamesForCheck(){
+    public function isJudgeGamesForCheck()
+    {
         $this->db->select("COUNT(*) as count");
         $this->db->where('status_id = 1');
         $this->db->from($this->_tablename3);
@@ -136,10 +140,11 @@ class Challenge_model extends CI_Model
 
         return $query->result();
     }
-    public function getOldestSubmittedChallenge(){
+    public function getOldestSubmittedChallenge()
+    {
         $this->db->select("ju.id, ju.chg_id, ju.chg_result, ju.submitted, chg.chg_name, chg.chg_type_id AS chg_type, chg.puzzle_page, chg.points, teams.team_name");
-        $this->db->from($this->_tablename3." AS ju");
-        $this->db->join($this->_tablename." AS chg", "ju.chg_id = chg.id", "LEFT");
+        $this->db->from($this->_tablename3 . " AS ju");
+        $this->db->join($this->_tablename . " AS chg", "ju.chg_id = chg.id", "LEFT");
         $this->db->join("hunt_gamecode AS gm", "ju.gamecode_id = gm.id", "LEFT");
         $this->db->join("teams", "gm.team_id = teams.id", "LEFT");
         $this->db->where("ju.status_id = 1");
@@ -147,7 +152,7 @@ class Challenge_model extends CI_Model
         $this->db->limit(1, 0);
         $query = $this->db->get();
         $a = $this->db->last_query();
-        
+
         return $query->row();
     }
     public function getSubmittedResults($huntId, $gamecodeId, $challengeId)
@@ -251,7 +256,7 @@ class Challenge_model extends CI_Model
         $this->db->update($this->_tablename3, $judgeInfo);
         return TRUE;
     }
-    
+
     public function deleteResultByChallengeId($challengeId)
     {
         $deleted = date('Y-m-d H:i:s');
