@@ -69,7 +69,9 @@
                                     <h1>Hunt Game End</h1>
                                     <div class="post-info">
                                         <!-- Post Comments -->
-                                        <p><i class="fa fa-star-o"></i><?= $totalPoints->points ?> Points in total</p>
+                                        <p><i class="fa fa-star-o"></i>
+                                            <span style="color:#e33737; font-size: 18px;"><?= $totalPoints->points ?> </span>
+                                        Points in total</p>
                                     </div>
                                     <div class="post-info">
                                         <!-- Post Comments -->
@@ -87,26 +89,28 @@
                                         <?php
                                             for($i=0; $i<count($teamLeaderBoard); $i++){
                                                 $one = $teamLeaderBoard[$i];
-                                                $judge_icon = $one->status_id==2 ? "<i class='fa fa-check-circle judged-icon'></i>" : "<i class='fa fa-exclamation-circle awaiting-judge-icon'></i>";
+                                                $judge_icon = $one->status_id==2 ? "<i class='fa fa-check-circle judged-icon'></i>" : "<i class='fa fa-question-circle awaiting-judge-icon'></i>";
                                                 echo "<tr>
                                                         <td>$one->chg_name</td>
                                                         <td align='center'>$one->points</td>
-                                                        <td align='center'>$one->earned_points</td>
+                                                        <td align='center'>";
+                                                echo $one->status_id==2 ? $one->earned_points : '???';
+                                                echo "</td>
                                                         <td align='center'>$judge_icon</td>
                                                      </tr>";
                                             }
                                         ?>
                                     </table>
                                 </div>
-                                <div class="comments-block">
+                                <!-- <div class="comments-block">
                                     <h3 class="text-center"></h3>
 
                                     <hr>
-                                    <!-- Comment -->
+                                    
                                     <div class="comment media">
 
                                     </div>
-                                </div>
+                                </div> -->
                                 <hr>
                             </div>
                         </div>
