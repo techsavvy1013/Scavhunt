@@ -121,8 +121,8 @@ function getOldestSubmittedChallenge(){
 	})
 }
 function clickJudgeBtn(chgResultId){
-	if(!confirm("Are you sure?!"))
-		return;
+	// if(!confirm("Are you sure?!"))
+	// 	return;
 	let el = $("#earned_points");
     let points = $(el).val();
     let maxPoints = $(el).attr("max");
