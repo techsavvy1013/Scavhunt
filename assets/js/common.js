@@ -110,6 +110,10 @@ function getOldestSubmittedChallenge(){
 							<td><i class="fa fa-star-o"></i> Points: </td>
 							<td><input id="earned_points" type="number" value="0" max="${info.points}" min="0"/></td>
 						</tr>
+						<tr>
+							<td></td>
+							<td><span>Max - ${info.points} Points</span></td>
+						</tr>
 					</table>
 					<div class="controlDiv">
 						<button class="btn btn-success" onclick="clickJudgeBtn(${info.id})"><i class="fa fa-gavel"></i> Judge</button>
