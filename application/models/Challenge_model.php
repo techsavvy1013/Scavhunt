@@ -2,10 +2,10 @@
 
 class Challenge_model extends CI_Model
 {
-    private $_tablename = 'challenges';
+    private $_tablename1 = 'challenges';
     private $_tablename2 = 'challenge_types';
     private $_tablename3 = 'challenge_judge';
-    private $_tablename4 = 'chg_databank';
+    private $_tablename14 = 'chg_databank';
 
     public function getAllChallengeTypes()
     {
@@ -25,7 +25,7 @@ class Challenge_model extends CI_Model
     public function getChallengeInfo($challengeId)
     {
         $this->db->where('id', $challengeId);
-        $query = $this->db->get($this->_tablename);
+        $query = $this->db->get($this->_tablename1);
         return $query->row();
     }
 
@@ -33,7 +33,7 @@ class Challenge_model extends CI_Model
     {
         $this->db->where('hunt_id', $huntId);
         $this->db->where('status_id = 1');
-        $this->db->from($this->_tablename);
+        $this->db->from($this->_tablename1);
         return $this->db->count_all_results();
     }
 
@@ -42,7 +42,7 @@ class Challenge_model extends CI_Model
         $this->db->where('hunt_id', $huntId);
         $this->db->where('status_id = 1');
         $this->db->order_by('id', 'ASC');
-        $query = $this->db->get($this->_tablename);
+        $query = $this->db->get($this->_tablename1);
         return $query->result();
     }
 
@@ -53,7 +53,7 @@ class Challenge_model extends CI_Model
         $this->db->where_in('chg_type_id', $typeIds);
         $this->db->where('status_id = 1');
         $this->db->order_by('id', 'ASC');
-        $query = $this->db->get($this->_tablename);
+        $query = $this->db->get($this->_tablename1);
         return $query->result();
     }
 
@@ -64,7 +64,7 @@ class Challenge_model extends CI_Model
         $this->db->where_in('chg_type_id', $typeIds);
         $this->db->where('status_id = 1');
         $this->db->order_by('id', 'ASC');
-        $query = $this->db->get($this->_tablename);
+        $query = $this->db->get($this->_tablename1);
         return $query->result();
     }
 
@@ -74,7 +74,7 @@ class Challenge_model extends CI_Model
         $this->db->where('status_id = 1');
         $this->db->order_by('id', 'ASC');
         $this->db->limit(1, $curChgNum);
-        $query = $this->db->get($this->_tablename);
+        $query = $this->db->get($this->_tablename1);
         $result = $query->result();
         if (count($result) > 0)
             return $result[0];
@@ -144,7 +144,7 @@ class Challenge_model extends CI_Model
     {
         $this->db->select("ju.id, ju.chg_id, ju.chg_result, ju.submitted, chg.chg_name, chg.chg_type_id AS chg_type, chg.puzzle_page, chg.points, teams.team_name");
         $this->db->from($this->_tablename3 . " AS ju");
-        $this->db->join($this->_tablename . " AS chg", "ju.chg_id = chg.id", "LEFT");
+        $this->db->join($this->_tablename1 . " AS chg", "ju.chg_id = chg.id", "LEFT");
         $this->db->join("hunt_gamecode AS gm", "ju.gamecode_id = gm.id", "LEFT");
         $this->db->join("teams", "gm.team_id = teams.id", "LEFT");
         $this->db->where("ju.status_id = 1");
@@ -192,7 +192,7 @@ class Challenge_model extends CI_Model
     public function insertChallenge($challengeInfo)
     {
         $this->db->trans_start();
-        $this->db->insert($this->_tablename, $challengeInfo);
+        $this->db->insert($this->_tablename1, $challengeInfo);
         $insert_id = $this->db->insert_id();
         $this->db->trans_complete();
         return $insert_id;
@@ -201,7 +201,7 @@ class Challenge_model extends CI_Model
     public function editChallenge($challengeInfo, $challengeId)
     {
         $this->db->where('id', $challengeId);
-        $this->db->update($this->_tablename, $challengeInfo);
+        $this->db->update($this->_tablename1, $challengeInfo);
         return TRUE;
     }
 
@@ -213,9 +213,9 @@ class Challenge_model extends CI_Model
             'deleted' => $deleted
         );
         $this->db->where('id', $challengeId);
-        $this->db->update($this->_tablename, $chgInfo);
+        $this->db->update($this->_tablename1, $chgInfo);
         return TRUE;
-        //$this->db->delete($this->_tablename);
+        //$this->db->delete($this->_tablename1);
         //return $this->db->affected_rows();
     }
 
@@ -254,7 +254,14 @@ class Challenge_model extends CI_Model
     {
         $this->db->where('id', $chgResultId);
         $this->db->update($this->_tablename3, $judgeInfo);
-        return TRUE;
+
+        $this->db->where('id', $chgResultId);
+        $query = $this->db->get($this->_tablename3);
+        $result = $query->row();
+        if (isset($result))
+            return $result;
+        else
+            return false;
     }
 
     public function deleteResultByChallengeId($challengeId)
@@ -284,21 +291,21 @@ class Challenge_model extends CI_Model
     {
         $this->db->where('status_id = 1');
         $this->db->order_by('id', 'ASC');
-        $query = $this->db->get($this->_tablename4);
+        $query = $this->db->get($this->_tablename14);
         return $query->result();
     }
 
     public function getChallengeDBInfo($challengeId)
     {
         $this->db->where('id', $challengeId);
-        $query = $this->db->get($this->_tablename4);
+        $query = $this->db->get($this->_tablename14);
         return $query->row();
     }
 
     public function insertChallengeDB($challengeInfo)
     {
         $this->db->trans_start();
-        $this->db->insert($this->_tablename4, $challengeInfo);
+        $this->db->insert($this->_tablename14, $challengeInfo);
         $insert_id = $this->db->insert_id();
         $this->db->trans_complete();
         return $insert_id;
@@ -307,7 +314,7 @@ class Challenge_model extends CI_Model
     public function editChallengeDB($challengeInfo, $challengeId)
     {
         $this->db->where('id', $challengeId);
-        $this->db->update($this->_tablename4, $challengeInfo);
+        $this->db->update($this->_tablename14, $challengeInfo);
         return TRUE;
     }
 
@@ -319,9 +326,9 @@ class Challenge_model extends CI_Model
             'deleted' => $deleted
         );
         $this->db->where('id', $challengeId);
-        $this->db->update($this->_tablename4, $chgInfo);
+        $this->db->update($this->_tablename14, $chgInfo);
         return TRUE;
-        //$this->db->delete($this->_tablename);
+        //$this->db->delete($this->_tablename1);
         //return $this->db->affected_rows();
     }
 
