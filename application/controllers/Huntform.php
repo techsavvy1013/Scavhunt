@@ -337,7 +337,7 @@ class Huntform extends CI_Controller
         $huntId = $_POST['huntId'];
         $challengeId = $_POST['challengeId'];
         $imageCaptured = isset($_POST['imageCaptured']) ? $_POST['imageCaptured'] : '';
-        $inpAnswer = $_POST['inpAnswer'];
+        $inpAnswer = isset($_POST['inpAnswer']) ? $_POST['inpAnswer'] : '';
 
         $points = 0;
         $statusId = 1; // submitted , wating for judgement..
