@@ -158,6 +158,7 @@ $route['deleteChallengeDB/(:num)/(:num)'] = 'scavrhunts/deleteChallengeDB/$1/$2'
 $route['copyChallengeDBToHunt/(:num)/(:num)'] = 'scavrhunts/copyChallengeDBToHunt/$1/$2';
 $route['isJudgeGamesForCheck'] = "scavrhunts/isJudgeGamesForCheck";
 $route['getOldestSubmittedChallenge'] = "scavrhunts/getOldestSubmittedChallenge";
+$route['getNotifications'] = "scavrhunts/getNotifications";
 
 $route['gotoHuntGame'] = 'huntform';
 $route['endHuntGame'] = 'huntform/huntEndForm';

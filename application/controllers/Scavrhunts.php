@@ -1168,4 +1168,17 @@ class Scavrhunts extends BaseController
         }
         redirect('/manageDataBank' . '/' . $huntId);
     }
+
+    public function getNotifications()
+    {
+        $playerId = $this->session->userdata('playerId');
+        $notifications = $this->notification_model->getAllNotifications($playerId);
+        if (count($notifications) == 0){
+            echo json_encode(["notification" => null]);
+            exit;
+        }
+            
+        echo json_encode(["notification" => $notifications[0]]);
+        $this->notification_model->checkAsRead($notifications[0]->id);
+    }
 }
