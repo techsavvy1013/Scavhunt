@@ -1,4 +1,4 @@
-<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
  * Class : Entryform (Entryform Controller)
@@ -33,14 +33,12 @@ class Entryform extends CI_Controller
         $curSchoolId = 0;
         if (isset($_GET["school"]))
             $curSchoolId = intval($_GET["school"]);
-        
+
         $allSchools = $this->school_model->getAllSchools();
         $strStdIdRequired = "";
         $arrStdIdRequired = array();
-        if (count($allSchools) > 0)
-        {
-            foreach ($allSchools as $k => $school)
-            {
+        if (count($allSchools) > 0) {
+            foreach ($allSchools as $k => $school) {
                 $arrStdIdRequired[$k] = $school->std_id_required;
             }
             $strStdIdRequired = implode("^", $arrStdIdRequired);
@@ -52,25 +50,27 @@ class Entryform extends CI_Controller
         $this->load->view("entryform.php", $data);
     }
 
-    public function canRegisterForHunt() {
+    public function canRegisterForHunt()
+    {
         $schoolId = $_REQUEST["schoolId"];
         $recentHunts = $this->hunt_model->getActiveHuntsSortedByDate($schoolId);
-        if(!count($recentHunts)){
+        if (!count($recentHunts)) {
             echo json_encode(["status" => 0, "msg" => "No Available Hunts!"]);
             return;
         }
         $hunt = $recentHunts[0];
-        $curDateTime = date("Y-m-d H:i:s"); 
-        $startDateTime = $hunt->start_date." ". $hunt->start_time;
+        $curDateTime = date("Y-m-d H:i:s");
+        $startDateTime = $hunt->start_date . " " . $hunt->start_time;
 
         $remainSecs = $this->common_model->calcSecondsBetweenTwoDates($curDateTime, $startDateTime);
-        if($remainSecs/60 > 30){  // team/player can register the new hunt before 30 mins
+        if ($remainSecs / 60 > 30) {  // team/player can register the new hunt before 30 mins
             echo json_encode(
                 [
                     "status" => 0,
-                    "msg" => "Current Time : ".$curDateTime
-                             ."<br>New Hunt Game will be started from ".$startDateTime
-            ]);
+                    "msg" => "Current Time : " . $curDateTime
+                        . "<br>New Hunt Game will be started from " . $startDateTime
+                ]
+            );
             return;
         }
         echo json_encode(["status" => 1, "msg" => ""]);
@@ -84,16 +84,16 @@ class Entryform extends CI_Controller
         $recentHunts = $this->hunt_model->getActiveHuntsSortedByDate($schoolId);
         $hunt = $recentHunts[0];
         $curDateTime = date("Y-m-d H:i:s");
-        $startDateTime = $hunt->start_date." ".$hunt->start_time;
-        $endDateTime = $hunt->end_date." ".$hunt->end_time;
+        $startDateTime = $hunt->start_date . " " . $hunt->start_time;
+        $endDateTime = $hunt->end_date . " " . $hunt->end_time;
 
         $remainSecs = $this->common_model->calcSecondsBetweenTwoDates($curDateTime, $startDateTime);
-        if($remainSecs/60 < 30 && $remainSecs/60 > 0)
+        if ($remainSecs / 60 < 30 && $remainSecs / 60 > 0)
             $data["hunt_status"] = "Ready";
-        if($remainSecs <= 0){
+        if ($remainSecs <= 0) {
             $data["hunt_status"] = "Started";
             $remainSecs = $this->common_model->calcSecondsBetweenTwoDates($curDateTime, $endDateTime);
-            if($remainSecs <= 0)
+            if ($remainSecs <= 0)
                 $data["hunt_status"] = "Ended";
         }
         $data["remainTime"] = $remainSecs;
@@ -114,27 +114,22 @@ class Entryform extends CI_Controller
         $loggedbefore = $this->security->xss_clean($this->input->post('loggedbefore'));
         if (!isset($loggedbefore))
             $loggedbefore = 0;
-        
-        if (intval($playersNum) == 1)
-        {
+
+        if (intval($playersNum) == 1) {
             $samedevice = "0";
             $teamname = "Solo Team";
             $teamcaptain = "";
             $teammembers = "";
-        }
-        else
-        {
+        } else {
             $samedevice = $this->security->xss_clean($this->input->post('samedevice'));
             $teamname = $this->security->xss_clean($this->input->post('teamname'));
             $teamcaptain = $this->security->xss_clean($this->input->post('teamcaptain'));
             $teammembers = $this->security->xss_clean($this->input->post('teammembers'));
         }
 
-        if ($step == 1)
-        {
+        if ($step == 1) {
             $samePlayer = $this->player_model->searchSamePlayer(/*$fullname, */$email, $schoolId);
-            if ($samePlayer == "0")
-            {
+            if ($samePlayer == "0") {
                 $playerInfo = array(
                     'name' => $fullname,
                     'email' => $email,
@@ -150,15 +145,11 @@ class Entryform extends CI_Controller
                 $newPlayer = $this->player_model->addNewPlayer($playerInfo);
                 $data["playerId"] = $newPlayer;
                 $loggedbefore = 0;
-            }
-            else
-            {
+            } else {
                 $data["playerId"] = $samePlayer;
                 $loggedbefore = 1;
             }
-        }
-        else
-        {
+        } else {
             $playerId = $this->security->xss_clean($this->input->post('playerId'));
             $data["playerId"] = $playerId;
         }
@@ -174,17 +165,22 @@ class Entryform extends CI_Controller
 
         //$result = $this->team_model->searchTeam(intval($step), $fullname, $schoolId, $playersNum, $teamname, $teamcaptain, $teammembers);
         $result = array();
-
-        while (count($result) == 0)
+        
+        if ($hunt->is_force_join == 0) // If is_force_join is unchecked in huntinfo
         {
+            $data["team_name"] = $teamname;
+            $this->assignRoom($data["playerId"], "0", $data);
+            return;
+        }
+        while (count($result) == 0) {
             if ($step > 3)
                 break;
             $result = $this->team_model->searchTeam($step, $fullname, $schoolId, intval($playersNum), $teamname, $teamcaptain, $teammembers);
             $step++;
         }
-        
+
         $data["matchTeams"] = $result;
-        if(count($result) == 1){
+        if (count($result) == 1) {
             $this->assignRoom($data["playerId"], $result[0]->id, $data);
             return;
         }
@@ -192,8 +188,7 @@ class Entryform extends CI_Controller
             $this->load->view("matchteams1.php", $data);
         if ($step == 3)
             $this->load->view("matchteams2.php", $data);
-        if ($step == 4)
-        {
+        if ($step == 4) {
             if (count($result) == 0)
                 $this->assignRoom($data["playerId"], "0", $data);
             else
@@ -211,27 +206,27 @@ class Entryform extends CI_Controller
         $curTime = date("H:i:s");
 
         $curTimeStamp = explode(":", $curTime);
-        $curTimeStamp = intval($curTimeStamp[0])*3600+intval($curTimeStamp[1])*60+intval($curTimeStamp[2]);
+        $curTimeStamp = intval($curTimeStamp[0]) * 3600 + intval($curTimeStamp[1]) * 60 + intval($curTimeStamp[2]);
         $startTimeStamp = explode(":", $hunt->start_time);
-        $startTimeStamp = intval($startTimeStamp[0])*3600+intval($startTimeStamp[1])*60+intval($startTimeStamp[2]);
+        $startTimeStamp = intval($startTimeStamp[0]) * 3600 + intval($startTimeStamp[1]) * 60 + intval($startTimeStamp[2]);
         $endTimeStamp = explode(":", $hunt->end_time);
-        $endTimeStamp = intval($endTimeStamp[0])*3600+intval($endTimeStamp[1])*60+intval($endTimeStamp[2]);
+        $endTimeStamp = intval($endTimeStamp[0]) * 3600 + intval($endTimeStamp[1]) * 60 + intval($endTimeStamp[2]);
 
         $remainTime = $startTimeStamp - $curTimeStamp;
-        if($curDate == $hunt->start_date && $remainTime > 0)
+        if ($curDate == $hunt->start_date && $remainTime > 0)
             $data["hunt_status"] = "Ready";
-        if(($curDate == $hunt->start_date && $remainTime <= 0) || $curDate > $hunt->start_date){
+        if (($curDate == $hunt->start_date && $remainTime <= 0) || $curDate > $hunt->start_date) {
             $data["hunt_status"] = "Started";
             $remainTime = $endTimeStamp - $curTimeStamp;
         }
-        if(($curDate > $hunt->end_date) || ($curDate == $hunt->end_date && $remainTime < 0))
+        if (($curDate > $hunt->end_date) || ($curDate == $hunt->end_date && $remainTime < 0))
             $data["hunt_status"] = "Ended";
         $data["remainTime"] = $remainTime;
         $data["huntInfo"] = $hunt;
 
         $playerId = $this->security->xss_clean($this->input->post('playerId'));
         $selTeamId = $this->security->xss_clean($this->input->post('selTeamId'));
-        
+
         $data["playersNum"] = $this->security->xss_clean($this->input->post('playersNum'));
         $data["samedevice"] = $this->security->xss_clean($this->input->post('samedevice'));
         $data["teamname"] = $this->security->xss_clean($this->input->post('teamname'));
@@ -248,20 +243,17 @@ class Entryform extends CI_Controller
         $school = $this->school_model->getSchoolInfo($player->school_id);
         $zoomAccountId = $school->zoom_account_id;
         $schoolId = $player->school_id;
-        
+
         //$schoolId = $this->security->xss_clean($this->input->post('schoolId'));
 
         $playersNum = $this->security->xss_clean($this->input->post('playersNum'));
-        if ($playersNum == "")
-        {
+        if ($playersNum == "") {
             $playersNum = $data["playersNum"];
             $samedevice = $data["samedevice"];
             $teamname = $data["teamname"];
             $teamcaptain = $data["teamcaptain"];
             $teammembers = $data["teammembers"];
-        }
-        else
-        {
+        } else {
             $samedevice = $this->security->xss_clean($this->input->post('samedevice'));
             $teamname = $this->security->xss_clean($this->input->post('teamname'));
             $teamcaptain = $this->security->xss_clean($this->input->post('teamcaptain'));
@@ -271,55 +263,47 @@ class Entryform extends CI_Controller
         $loggedbefore = $data["loggedbefore"];
         if ($loggedbefore == 1)
             $selTeamId = $player->team_id;
-        
+
         $assignedRoomId = $player->room_id;
 
         //$created = gmdate('Y-m-d H:i:s', time()-14400);
         $created = date('Y-m-d H:i:s');
-        
-        if (intval($selTeamId) == 0)
-        {
-            if (intval($assignedRoomId) == 0)
-            {
-                if ($playersNum <= 2)
-                {
+
+        if (intval($selTeamId) == 0) {
+            if (intval($assignedRoomId) == 0) {
+                if ($playersNum <= 2) {
                     $assignedRoomId = $this->room_model->assignAutoSoloVacantRoom($zoomAccountId, $schoolId, intval($playersNum));
+                } else {
+                    $assignedRoomId = $this->room_model->assignAutoVacantRoom($zoomAccountId, $schoolId, intval($playersNum));
                 }
-                else
-                {
-                    $assignedRoomId = $this->room_model->assignAutoVacantRoom($zoomAccountId, $schoolId, intval($playersNum));    
-                }
-            }    
+            }
             if ($teamname == "" && intval($playersNum) == 1)
                 $teamname = "Solo Team";
-            if (intval($loggedbefore) == 0)
-            {    
-                $teamInfo = array(
-                    'school_id' => $schoolId,
-                    'team_name' => $teamname,
-                    'players_count' => $playersNum,
-                    'same_device' => $samedevice,
-                    'room_id' => $assignedRoomId,
-                    'captain' => $teamcaptain,
-                    'members' => $teammembers,
-                    'status_id' => 1,
-                    'created' => $created,
-                    'room_exited' => NULL
-                );
+
+            $teamInfo = array(
+                'school_id' => $schoolId,
+                'team_name' => $teamname,
+                'players_count' => $playersNum,
+                'same_device' => $samedevice,
+                'room_id' => $assignedRoomId,
+                'captain' => $teamcaptain,
+                'members' => $teammembers,
+                'status_id' => 1,
+                'created' => $created,
+                'room_exited' => NULL
+            );
+            if (intval($loggedbefore) == 0 || $player->team_id == 0) {
                 $insId = $this->team_model->addNewTeam($teamInfo);
                 $selTeamId = $insId;
             }
-        }
-        else
-        {
+        } else {
             $teamInfo = $this->team_model->getTeamInfo($selTeamId);
             $assignedRoomId = $teamInfo->room_id;
-            if (intval($playersNum) > intval($teamInfo->players_count))
-            {
+            if (intval($playersNum) > intval($teamInfo->players_count)) {
                 $updateTeamInfo = array(
                     'players_count' => intval($playersNum),
                     'room_id' => $assignedRoomId,
-                    'members' => $teammembers    
+                    'members' => $teammembers
                 );
                 $this->team_model->updateTeam($updateTeamInfo, $selTeamId);
             }
@@ -328,18 +312,18 @@ class Entryform extends CI_Controller
         $updatePlayerInfo = array(
             'team_id' => $selTeamId,
             'room_id' => $assignedRoomId
-            );
+        );
         $this->player_model->updatePlayer($updatePlayerInfo, $playerId);
         $roomInfo = $this->room_model->getRoomInfo($assignedRoomId);
-        
+
         $roomLogInfo = array(
             'room_id' => $assignedRoomId,
             'school_id' => $player->school_id,
             'team_id' => $selTeamId,
             'status_id' => $roomInfo->status_id,
             'room_closed' => NULL
-            );
-        
+        );
+
         $insRoomId = $this->room_model->searchSameRoomLog($assignedRoomId, $selTeamId, $roomInfo->status_id);
         if (intval($insRoomId) == 0)
             $insRoomId = $this->room_model->addNewRoomLog($roomLogInfo);
@@ -350,18 +334,13 @@ class Entryform extends CI_Controller
         $this->session->set_userdata('teamName', $teamname);
         $this->session->set_userdata('schoolId', $schoolId);
 
-        if (intval($assignedRoomId) == 0)
-        {
+        if (intval($assignedRoomId) == 0) {
             $roomMates = array();
-        }
-        else
-        {
+        } else {
             $roomMates = $this->player_model->getSameRoomPlayers($assignedRoomId);
-            if (count($roomMates) > 0)
-            {
+            if (count($roomMates) > 0) {
                 $k = 0;
-                foreach ($roomMates as $record)
-                {
+                foreach ($roomMates as $record) {
                     $teamInfo = $this->team_model->getTeamInfo($record->team_id);
                     $roomInfo = $this->room_model->getRoomInfo($record->room_id);
                     $ret[$k]["id"] = $record->id;
@@ -369,7 +348,7 @@ class Entryform extends CI_Controller
                     $ret[$k]["teamname"] = $teamInfo->team_name;
                     $ret[$k]["captain"] = $teamInfo->captain;
                     $ret[$k]["roomno"] = $roomInfo->room_no;
-                    $ret[$k]["gamelink"] = base_url()."gotoHunt/?hunt=".$data["huntInfo"]->id;
+                    $ret[$k]["gamelink"] = base_url() . "gotoHunt/?hunt=" . $data["huntInfo"]->id;
                     $k++;
                 }
             }
@@ -379,5 +358,4 @@ class Entryform extends CI_Controller
         $data["teamId"] = $selTeamId;
         $this->load->view("assignedroom.php", $data);
     }
-
 }

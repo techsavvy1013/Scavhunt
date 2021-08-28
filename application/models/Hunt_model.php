@@ -63,7 +63,7 @@ class Hunt_model extends CI_Model
         return $query->result();
     }
     public function getActiveHuntsSortedByDate($schoolId) {
-        $this->db->select("id, school_id, start_date, start_time, end_date, end_time");
+        $this->db->select("id, school_id, start_date, start_time, end_date, end_time, is_force_join");
         $this->db->from($this->_tablename);
         $this->db->where("is_active = 1");
         $this->db->where("status_id != 4");
