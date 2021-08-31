@@ -166,7 +166,8 @@ class Entryform extends CI_Controller
         //$result = $this->team_model->searchTeam(intval($step), $fullname, $schoolId, $playersNum, $teamname, $teamcaptain, $teammembers);
         $result = array();
         
-        if ($hunt->is_force_join == 0) // If is_force_join is unchecked in huntinfo
+        // Players are playing altogether, team with more than 3 players, and unchecked in hunt checkbox
+        if ($samedevice == 1 && $hunt->is_force_join == 0 && intval($playersNum) > 2) // If is_force_join is unchecked in huntinfo
         {
             $data["team_name"] = $teamname;
             $this->assignRoom($data["playerId"], "0", $data);
