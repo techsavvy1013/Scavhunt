@@ -129,7 +129,7 @@
                                                 {
                                         ?>
                                         <li class="challenge-number challenge-past" onclick="viewFeedback(<?php echo $i; ?>);">
-                                            <img class="img-rounded img-responsive" src="<?php echo base_url(); ?>assets/images/game-door2-open.png"/>
+                                            <img class="img-rounded img-responsive" src="<?php echo base_url() . ($huntInfo->door_image_path == '' || $huntInfo->door_image_path == NULL ? 'assets\images\huntdoors\default' : $huntInfo->door_image_path) ?>\DoorOpen.png"/>
                                             <span class="solved" id="chg_num_<?php echo $i+1; ?>"></span>
                                         </li>
                                         <?php
@@ -138,7 +138,7 @@
                                                 {
                                         ?>
                                         <li class="challenge-number challenge-current">
-                                            <img class="img-rounded img-responsive" src="<?php echo base_url(); ?>assets/images/game-door2-closed.png"/>
+                                            <img class="img-rounded img-responsive" src="<?php echo base_url() . ($huntInfo->door_image_path == '' || $huntInfo->door_image_path == NULL ? 'assets\images\huntdoors\default' : $huntInfo->door_image_path) ?>\DoorClose.png"/>
                                             <span class="not-solved" id="chg_num_<?php echo $i+1; ?>"></span>
                                         </li>
                                         <?php
@@ -147,7 +147,7 @@
                                                 {
                                         ?>
                                         <li class="challenge-number">
-                                            <img class="img-rounded img-responsive" src="<?php echo base_url(); ?>assets/images/game-door2-closed.png"/>
+                                            <img class="img-rounded img-responsive" src="<?php echo base_url() . ($huntInfo->door_image_path == '' || $huntInfo->door_image_path == NULL ? 'assets\images\huntdoors\default' : $huntInfo->door_image_path) ?>\DoorClose.png"/>
                                             <span class="not-solved" id="chg_num_<?php echo $i+1; ?>"></span>
                                         </li>
                                         <?php
@@ -165,7 +165,7 @@
                                                 {
                                         ?>
                                         <li class="challenge-number challenge-past" onclick="viewFeedback(<?php echo $i; ?>);">
-                                            <img class="img-rounded img-responsive" src="<?php echo base_url(); ?>assets/images/game-door2-open.png"/>
+                                            <img class="img-rounded img-responsive" src="<?php echo base_url() . ($huntInfo->door_image_path == '' || $huntInfo->door_image_path == NULL ? 'assets\images\huntdoors\default' : $huntInfo->door_image_path) ?>\DoorOpen.png"/>
                                             <span class="solved" id="chg_num_<?php echo $i+1; ?>"></span>
                                         </li>
                                         <?php
@@ -174,7 +174,7 @@
                                                 {
                                         ?>
                                         <li class="challenge-number challenge-current">
-                                            <img class="img-rounded img-responsive" src="<?php echo base_url(); ?>assets/images/game-door2-closed.png"/>
+                                            <img class="img-rounded img-responsive" src="<?php echo base_url() . ($huntInfo->door_image_path == '' || $huntInfo->door_image_path == NULL ? 'assets\images\huntdoors\default' : $huntInfo->door_image_path) ?>\DoorClose.png"/>
                                             <span class="not-solved" id="chg_num_<?php echo $i+1; ?>"></span>
                                         </li>
                                         <?php
@@ -183,7 +183,7 @@
                                                 {
                                         ?>
                                         <li class="challenge-number">
-                                            <img class="img-rounded img-responsive" src="<?php echo base_url(); ?>assets/images/game-door2-closed.png"/>
+                                            <img class="img-rounded img-responsive" src="<?php echo base_url() . ($huntInfo->door_image_path == '' || $huntInfo->door_image_path == NULL ? 'assets\images\huntdoors\default' : $huntInfo->door_image_path) ?>\DoorClose.png"/>
                                             <span class="not-solved" id="chg_num_<?php echo $i+1; ?>"></span>
                                         </li>
                                         <?php

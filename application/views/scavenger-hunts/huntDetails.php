@@ -13,6 +13,7 @@ $endDay = $huntInfo->end_date;
 $endTime = $huntInfo->end_time;
 $maxTime = $huntInfo->max_time;
 $isForceJoin = $huntInfo->is_force_join;
+$doorImagePath = $huntInfo->door_image_path;
 ?>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -45,6 +46,14 @@ $isForceJoin = $huntInfo->is_force_join;
                                     <div class="form-group">
                                         <label for="huntlogo">Header</label>
                                         <input accept="image/jpeg, image/png" autocomplete="off" type="file" tabindex="-1" class="form-control required" value="" id="huntlogo" name="huntlogo" maxlength="255" onchange="sethuntlogo(this);">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="huntname">Image Path for (opened/closed door)</label>
+                                        <input type="text" class="form-control required" value="<?php echo $doorImagePath == '' ? 'assets\images\huntdoors\default' : $doorImagePath; ?>" id="doorImagePath" name="doorImagePath" maxlength="255">
                                     </div>
                                 </div>
                             </div>
