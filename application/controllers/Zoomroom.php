@@ -67,7 +67,7 @@ class Zoomroom extends BaseController
             $ret = array();
             $k = 0;
  
-            for ($k=0; $k<50; $k++)
+            for ($k=0; $k<(int)$zoomAccount->room_count; $k++)
             {
                 $roomSchoolIds[$k] = 0;
                 $roomStatusIds[$k] = 1;
@@ -173,7 +173,7 @@ class Zoomroom extends BaseController
             }
 
             $ret2 = array();
-            for ($k=0; $k<50; $k++)
+            for ($k=0; $k<(int)$zoomAccount->room_count; $k++)
             {
                 $roomId = $this->room_model->getRoomId($accountId, $k+1);
                 $ret2[$k] = $this->getTeamsByRoomId($roomId, $schoolIds);
@@ -186,6 +186,7 @@ class Zoomroom extends BaseController
             $data['zoomRooms'] = $ret;
             $data['roomTeams'] = $ret2;
             $data['newPlayers'] = implode(",", $newPlayers);
+            $data['room_count'] = $zoomAccount->room_count;
 
             $schools = $this->school_model->getSchoolsByAccount($accountId);
             $k = 0;

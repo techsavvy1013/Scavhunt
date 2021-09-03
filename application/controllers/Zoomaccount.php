@@ -92,9 +92,9 @@ class Zoomaccount extends BaseController
             else
             {
                 $accountname = $this->security->xss_clean($this->input->post('accountname'));
+                $room_count = $this->security->xss_clean($this->input->post('room_count'));
                 
-                
-                $accountInfo = array('account_name'=>$accountname, 'created'=>date('Y-m-d H:i:s'));
+                $accountInfo = array('account_name'=>$accountname, 'room_count'=>$room_count, 'created'=>date('Y-m-d H:i:s'));
                 
                 $this->load->model('zoomaccount_model');
                 $result = $this->zoomaccount_model->insertZoomAccount($accountInfo);
@@ -102,7 +102,7 @@ class Zoomaccount extends BaseController
                 if($result > 0)
                 {
                     $this->session->set_flashdata('success', 'New zoom account created successfully');
-                    for ($i = 0; $i < 50; $i++)
+                    for ($i = 0; $i < (int)$room_count; $i++)
                     {
                         $roomno = $i + 1;
                         $roomInfo = array('zoom_account_id' => $result, 'room_no' => $roomno, 'status_id' => '1');
