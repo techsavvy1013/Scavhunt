@@ -29,8 +29,17 @@
                                     </div>
                                     
                                 </div>
+
                                 <div class="col-md-6">
-                                </div>
+                                    <div class="form-group">
+                                        <label for="role">Room Count</label>
+                                        <select class="form-control required" id="room_count" name="room_count">
+                                            <option value="50">50</option>
+                                            <option value="200">200</option>
+                                        </select>
+                                    </div>
+                                </div>   
+
                             </div>
                         </div><!-- /.box-body -->
     

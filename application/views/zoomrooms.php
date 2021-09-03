@@ -175,7 +175,7 @@
                 </thead>
                 <tbody>
                 <?php
-                    for ($i=0; $i<25; $i++)
+                    for ($i=0; $i<((int)$room_count / 2); $i++)
                     {
                 ?>
                     <tr>
