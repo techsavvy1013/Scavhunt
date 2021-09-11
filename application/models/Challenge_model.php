@@ -82,6 +82,26 @@ class Challenge_model extends CI_Model
             return NULL;
     }
 
+    public function getLeaderBoardByHuntId($huntId)
+    {
+        $selectQuery = "SELECT gm.team_id,
+                        IF(teams.players_count=1, CONCAT('Room ', teams.room_id), teams.team_name) AS team_name,
+                        SUM(ju.points) AS points ";
+        $selectQuery = "SELECT gm.team_id,
+                        CONCAT(teams.team_name, ' - Room ', teams.room_id) AS team_name,
+                        SUM(ju.points) AS points ";
+        $sql0 = $selectQuery . "FROM challenge_judge AS ju
+                LEFT JOIN hunt_gamecode AS gm ON ju.gamecode_id = gm.id
+                LEFT JOIN teams ON teams.id = gm.team_id
+                WHERE ju.hunt_id = $huntId AND teams.room_id != 0
+                GROUP BY ju.gamecode_id 
+                ORDER BY points DESC
+                LIMIT 0, 10";
+        $result = $this->db->query($sql0)->result();
+
+        return $result;
+    }
+
     public function getLeaderBoardByHunt($huntId, $gameCodeId)
     {
         $selectQuery = "SELECT gm.team_id,
