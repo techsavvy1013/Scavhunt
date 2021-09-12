@@ -142,6 +142,23 @@ class Challenge_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    public function getChallengeResults($huntId)
+    {
+        $selectQuery = "SELECT players.name AS player_name, 
+		                teams.team_name AS team_name,
+                        ju.points AS points,
+                        chg_result AS result,
+                        chg_type.name AS chg_type";
+		$query = $selectQuery . " FROM challenge_judge AS ju
+                        LEFT JOIN players AS players ON players.id = ju.player_id
+                        LEFT JOIN challenges AS chg ON ju.chg_id = chg.id
+                        LEFT JOIN challenge_types AS chg_type ON chg_type.id = chg.chg_type_id
+                                LEFT JOIN hunt_gamecode AS gm ON ju.gamecode_id = gm.id
+                                LEFT JOIN teams ON teams.id = gm.team_id";
+        $query = $query . " WHERE ju.hunt_id = " . $huntId;
+        return $this->db->query($query)->result();
+    }
+
     public function getTotalPointsByHunt($huntId)
     {
         $this->db->select("SUM(points) as points");

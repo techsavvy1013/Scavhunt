@@ -167,5 +167,7 @@ $route['gotoHunt'] = 'huntform/assignGameCode';
 $route['submitHuntAnswer'] = 'huntform/submitAnswer';
 $route['viewFeedback'] = 'huntform/viewFeedback';
 
+// leaderboard and hightlight reel
+$route['leaderboard/(:num)'] = 'huntform/showLeaderboardpage/$1';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
