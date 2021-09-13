@@ -127,7 +127,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="maxTime">Maximum Time (Minutes)</label>
-                                        <input type="number" class="form-control required" value="" id="maxTime" name="maxTime" min="1" max="60"/>
+                                        <input type="number" class="form-control required" value="" id="maxTime" name="maxTime" min="1" max="240"/>
                                     </div>
                                 </div>
                             </div>

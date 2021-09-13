@@ -55,7 +55,7 @@
                             Error! A student ID can contain only digits.
                         </p>
                     </div>
-                    <div class="form-group has-feedback">
+                    <div class="form-group has-feedback <?php echo isset($curSchoolId) ? 'hidden' : ''?>">
                         <label for="selSchoolId">Institution/College/University<span style="color:red;">*</span></label>
                         <select id="selSchoolId" class="form-control" onchange="setEntryTitle();">
                         <?php
@@ -305,6 +305,10 @@
             form.submit();
         });
     });
+
+    var errorMsg = "<?php echo $errorMsg; ?>";
+    if (errorMsg != "")
+        displayMsg(errorMsg);
 
     function getTeamInfo(playersNum)
     {

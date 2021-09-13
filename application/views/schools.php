@@ -82,6 +82,7 @@
                         <th>Address</th>
                         <th>Zoom Account</th>
                         <th>Active/<br>Deactive</th>
+                        <th>School Entry Form Link</th>
                         <th>Target Page</th>
                         <th>Video ID</th>
                         <th>Subdomain</th>
@@ -102,6 +103,7 @@
                         <td><?php echo $record->sch_address ?></td>
                         <td><?php echo $record->account_name ?></td>
                         <td><?php $str_active = ($record->is_active == "1") ? "Active" : "Deactive"; echo $str_active;?></td>
+                        <td><?php echo base_url() . 'entryform/entryFormBySchool/' . $record->id ?></td>
                         <td><?php echo $record->zoom_link ?></td>
                         <td><?php echo $record->video_id ?></td>
                         <td><?php echo $record->subdomains ?></td>

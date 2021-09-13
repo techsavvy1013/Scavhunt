@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-$route['default_controller'] = "entryform";
+$route['default_controller'] = "entryform/direct_to_school_entry";
 $route['404_override'] = 'error_404';
 $route['translate_uri_dashes'] = FALSE;
 
@@ -125,6 +125,7 @@ $route['searchTeam'] = 'entryform/searchTeam';
 $route['searchTeam/(:any)'] = 'entryform/searchTeam/$1';
 $route['selectTeam'] = 'entryform/selectTeam';
 $route['canRegisterForHunt'] = "entryform/canRegisterForHunt";
+$route['entryform/byschool/(:num)'] = 'entryform/entryFormBySchool/$1';
 
 $route['groupListing'] = 'zoomgroup/groupListing';
 $route['groupListing/(:any)'] = 'zoomgroup/groupListing/$1';

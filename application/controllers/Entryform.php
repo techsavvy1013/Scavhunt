@@ -50,6 +50,37 @@ class Entryform extends CI_Controller
         $this->load->view("entryform.php", $data);
     }
 
+    public function direct_to_school_entry(){
+        $this->load->view("entryform_direct_to_school.php");
+    }
+
+    public function entryFormBySchool($schoolId)
+    {
+        $curSchoolId = $schoolId;
+        
+        $allSchools = $this->school_model->getAllSchools();
+        $strStdIdRequired = "";
+        $arrStdIdRequired = array();
+        if (count($allSchools) > 0) {
+            foreach ($allSchools as $k => $school) {
+                $arrStdIdRequired[$k] = $school->std_id_required;
+            }
+            $strStdIdRequired = implode("^", $arrStdIdRequired);
+        }
+
+        $data['curSchoolId'] = $curSchoolId;
+        $data['allSchools'] = $allSchools;
+        $data['stdIdRequired'] = $strStdIdRequired;
+        $data['errorMsg'] = "";
+
+        $recentHunts = $this->hunt_model->getActiveHuntsSortedByDate($schoolId);
+        if (!count($recentHunts)) {
+            $data['errorMsg'] = "No Available Hunts!";
+        }
+
+        $this->load->view("entryform.php", $data);
+    }
+
     public function canRegisterForHunt()
     {
         $schoolId = $_REQUEST["schoolId"];

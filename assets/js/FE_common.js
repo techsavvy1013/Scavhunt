@@ -37,6 +37,23 @@ function startCount(huntStatus, remainTime, huntInfo) {
         $(".counter-dlg strong").html(msg);
     }, 1000)
 }
+function displayMsg(msg) {
+    if(!$(".alert-dlg").length)
+        $("body").append("<div class='alert-dlg'></div>");
+    $(".error-dlg[style*='display: none']").remove();
+
+    let dlg_id = parseInt(Math.random()*10000);
+    let error_html = `
+        <div id="dlg_${dlg_id}" class="alert alert-danger alert-dismissible error-dlg">
+            <span href="#" class="close" data-dismiss="alert" aria-label="close">&times;</span>
+            <strong>${msg}</strong>
+        </div>`;
+    $(".alert-dlg").append(error_html);
+    $(`#dlg_${dlg_id}`).hide().fadeIn();
+    setTimeout(function(){
+        $(`#dlg_${dlg_id}`).fadeOut();
+    }, 10000);
+}
 function displayError(msg) {
     if(!$(".alert-dlg").length)
         $("body").append("<div class='alert-dlg'></div>");
