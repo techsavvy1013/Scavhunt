@@ -153,11 +153,10 @@ class Huntform extends CI_Controller
     public function showLeaderboardpage($huntId = NULL)
     {
         $leaderBoard = $this->challenge_model->getLeaderBoardByHuntId($huntId);
-        $challengeResults = $this->challenge_model->getChallengeResults($huntId);
+        $challengeResults = $this->challenge_model->getChallengeResults ($huntId);
         $data['leaderBoard'] = $leaderBoard;
-        $data['challengeResults'] = $leaderBoard;
-        // $this->load->view("scavenger-hunts/leaderBoard.php", $data);
-        var_dump($challengeResults);
+        $data['challengeResults'] = $challengeResults;
+        $this->load->view("scavenger-hunts/leaderBoard.php", $data);
     }
 
     public function viewFeedback()

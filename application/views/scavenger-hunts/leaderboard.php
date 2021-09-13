@@ -43,11 +43,63 @@
 
     <script src="<?php echo base_url(); ?>assets/js/FE_common.js"></script>
 
+    <script src="<?php echo base_url(); ?>assets/js/slizer.js-master/src/Slizer.js"></script>
+
+    <style>
+        @font-face {
+            font-family: "Hunky Dory";
+            src: url("<?php echo base_url(); ?>assets/fonts/HunkyDory-K7yLl.otf") format("opentype");
+        }
+
+        @font-face {
+            font-family: "Tuckshop Font";
+            src: url("<?php echo base_url(); ?>assets/fonts/tuckshop regular.ttf") format("truetype");
+        }
+
+        @font-face {
+            font-family: "skippy_sharpie";
+            src: url("<?php echo base_url(); ?>assets/fonts/skippy_sharpie.ttf") format("truetype");
+        }
+
+        .section_title {
+            /* font-family: 'skippy_sharpie'; */
+            /* font-weight: 700; */
+            /* font-size: 1.75em; */
+            /* color: rgb(63, 10, 9); */
+        }
+
+        .section_content1 {
+            /* font-family: 'skippy_sharpie'; */
+            /* font-weight: 700; */
+            /* font-size: 1.5em; */
+            /* color: rgb(248, 227, 191); */
+        }
+
+        .section_content2 {
+            /* font-family: 'skippy_sharpie'; */
+            /* font-weight: 700; */
+            /* font-size: 1.5em; */
+            /* color: rgb(63, 10, 9); */
+            /* color: #5f6fcf; */
+        }
+
+        .image-bk {
+            /* background: url("<?php echo base_url(); ?>/assets/images/leaderboard-background.jpg"); */
+            /* background-repeat: no-repeat; */
+            /* background-size: 100% 100%; */
+        }
+
+        .well {
+            height: calc(100vh - 190px);
+            overflow: auto;
+        }
+    </style>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-custom">
-    <nav class="navbar navbar-custom navbar-fixed-top" id="navbar-custom">
-    </nav>
+
+    <!-- <img src="" width="100%" style="opacity:0.8; position:absolute; max-height:100vh" /> -->
+
     <!-- Preloader -->
     <div id="loading">
         <div id="loading-center">
@@ -61,29 +113,73 @@
     <!-- /preloader -->
 
     <!-- Section Blog -->
-    <section id="blog-main">
-        <div class="container">
-            <div class="row">
+    <section id="blog-main" class="image-bk" style="
+        height: 100vh;
+        overflow:hidden;
+        /* background-color:black; */
+    ">
+        <div class="container-cancel" style="padding-top:0px; margin:0px;">
+            <div class="row" style="margin-top:3px; display:flex; padding-top:1%">
                 <!-- Sidebar Column -->
-                <div class="sidebar col-md-4">
+                <!-- <div class="sidebar col-md-4"> -->
+                <div style="width: 47%;margin-left: 2%;margin-right: 1%;display: inline-block;">
                     <div class="well">
                         <div class="leaderboard-container">
-                            <h5><span>LEADERBOARD</span></h5>
+                            <h5><span class="section_title">LeaderBoard</span></h5>
                             <div style="text-align:left">
                                 <?php
                                 for ($i = 0; $i < count($leaderBoard); $i++) {
                                     $one = $leaderBoard[$i];
                                     $number = $i + 1;
-                                    echo "<div>
-                                                    <span>
-                                                        $number. $one->team_name .... $one->points
-                                                    </span>
-                                                </div>";
+                                    echo "<div>";
+                                    echo "<span class='section_content2'>$number</span> .&nbsp;&nbsp;";
+                                    echo "<span class='section_content1'>$one->team_name</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    echo "<span class='section_content2'>&nbsp;&nbsp;&nbsp;&nbsp;$one->points</span>";
+                                    echo "</div>";
                                 }
                                 ?>
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- <div class="col-md-2"></div> -->
+                <!-- <div class="col-md-6"> -->
+                <div style="width: 48%;display: inline-block;">
+                    <div class="well">
+                        <div class="leaderboard-container">
+                            <h5><span class='section_title'>Challenges Results</span></h5>
+                            <div style="text-align:left">
+                                <?php
+                                for ($i = 0; $i < count($challengeResults); $i++) {
+                                    $one = $challengeResults[$i];
+                                    $number = $i + 1;
+                                    $playerName = strcmp($one->team_name, 'Solo Team') == 0 ? $one->player_name : $one->team_name;
+                                    echo "<div>";
+                                    echo    "<span class='section_content2'>Team &nbsp; </span>";
+                                    echo    "<span class='section_content1'> $playerName </span>";
+                                    echo    "<span class='section_content2'> solves Challenge &nbsp; </span>";
+                                    echo    "<span class='section_content1'> $one->chg_name </span>";
+                                    echo "</div>";
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="
+                position: absolute;/* width: 100vw; */bottom:0px;background-color: black;
+                padding-top:20px;padding-bottom:20px;left: 15px;right: 0px;width: 100%;
+            ">
+                <div id="slidingImage" style="display:flex; overflow: auto">
+                    <?php
+                    for ($i = 0; $i < count($challengeResults); $i++) {
+                        $one = $challengeResults[$i];
+                        if (strcmp($one->chg_type, 'Photo') != 0)
+                            continue;
+                        echo "<img src='$one->result' height='120' />";
+                    }
+                    ?>
                 </div>
             </div>
             <!-- Footer -->
@@ -106,7 +202,17 @@
 
 </html>
 <script language="javascript">
-    var gamecode = eval("<?php echo $gamecode; ?>");
+    const object = document.getElementById("slidingImage");
+    const slized = new Slizer(object);
+    const slized = new Slizer(object, {
+        Direction: 'h',
+        RoundInterval: 100,
+        PixelPerRound: 10
+    });
+
+
+
+
     var playerId = eval("<?php echo $playerId; ?>");
     var huntId = eval("<?php echo $huntId; ?>");
     var teamId = eval("<?php echo $teamId; ?>");
@@ -214,5 +320,4 @@
         window.location = "<?php echo base_url(); ?>viewFeedback/?gc=" + gamecode + "&cn=" + chgNum;
         // window.open("<?php echo base_url(); ?>viewFeedback/?gc=" + gamecode + "&cn=" + chgNum);
     }
-
 </script>

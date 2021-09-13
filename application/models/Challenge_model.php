@@ -148,6 +148,7 @@ class Challenge_model extends CI_Model
 		                teams.team_name AS team_name,
                         ju.points AS points,
                         chg_result AS result,
+                        chg.chg_name AS chg_name,
                         chg_type.name AS chg_type";
 		$query = $selectQuery . " FROM challenge_judge AS ju
                         LEFT JOIN players AS players ON players.id = ju.player_id
