@@ -148,12 +148,12 @@ $doorImagePath = $huntInfo->door_image_path;
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="maxTime">Maximum Time (Minutes)</label>
-                                        <input type="number" class="form-control required" value="<?php echo $maxTime; ?>" id="maxTime" name="maxTime" min="1" max="60" />
+                                        <input type="number" class="form-control required" value="<?php echo $maxTime; ?>" id="maxTime" name="maxTime" min="1" max="240" />
                                     </div>
                                 </div>
 
                             </div>
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <br>
@@ -161,7 +161,7 @@ $doorImagePath = $huntInfo->door_image_path;
                                         <label for="isForceJoin">Force solo/duo teams to join others</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div><!-- /.box-body -->
 
                         <div class="box-footer">

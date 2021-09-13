@@ -76,10 +76,10 @@
                     <div class="form-group has-feedback">
                         <label for="playersId">
                             Number of players in your group<span style="color:red;">*</span><br>
-                            <p style="color:grey;">Your group can have a maximum of 10 players in Zoom. To allow for room for everybody the minimum group size is 3. We will pair up smaller groups. If you have fewer than 8 players, we may add solo players to your team.</p>
+                            <!-- <p style="color:grey;">Your group can have a maximum of 10 players in Zoom. To allow for room for everybody the minimum group size is 3. We will pair up smaller groups. If you have fewer than 8 players, we may add solo players to your team.</p> -->
                         </label>
                         <select id="playersId" name="playersId" class="form-control" onchange="getTeamInfo(this.value);">
-                            <option value="1" selected>Solo Player looking for a team</option>
+                            <option value="1" selected>Solo Player</option>
                             <option value="2">2 Players</option>
                             <option value="3">3 Players</option>
                             <option value="4">4 Players</option>
@@ -88,11 +88,11 @@
                             <option value="7">7 Players</option>
                             <option value="8">8 Players</option>
                             <option value="9">9 Players</option>
-                            <option value="10">10 Players</option>
+                            <option value="10">10 or more players</option>
                         </select>
                     </div>
                     <div id="team_info">
-                        <div class="form-group has-feedback">
+                        <!-- <div class="form-group has-feedback">
                             <label for="samedevice">
                                 Are all you players on the team located together? (Yes if you are in the same room playing on the same computer or device; No if players are joining Zoom using different devices or in different locations)<span style="color:red;">*</span><br>
                             </label>
@@ -106,7 +106,7 @@
                                     &nbsp;&nbsp;&nbsp;<input type="radio" class="form-check-input" name="samedevice" value="0" checked>&nbsp;&nbsp;&nbsp;Zoom
                                 </label>
                             </div>
-                        </div>
+                        </div> -->
                         
                         <div id="noteam_div" class="form-group has-feedback">
                             <label for="teamname">Team Name<span style="color:red;">*</span></label>
