@@ -58,7 +58,7 @@
                                 <td><?php echo $record["teamname"] ?></td>
                                 <td><?php echo $record["captain"] ?></td>
                                 <td><?php echo $record["roomno"] ?></td>
-                                <td><a href="<?php echo $record['gamelink'] ?>" target="_blank"><?php echo $record['gamelink'] ?></a></td>
+                                <td><a href="#" onclick="gotoURL('<?php echo $record['gamelink'] ?>')" target="_blank"><?php echo $record['gamelink'] ?></a></td>
                             </tr>
                             <?php
                                 }
@@ -100,4 +100,11 @@
         });
     });
 
+</script>
+
+<script language="javascript">
+    function gotoURL(url)
+    {
+        location.href = url;
+    }
 </script>
