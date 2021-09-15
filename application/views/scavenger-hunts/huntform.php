@@ -228,15 +228,27 @@
                             <h5><span>LEADERBOARD</span></h5>
                             <div style="text-align:left">
                                 <?php
-                                for ($i = 0; $i < count($leaderBoard); $i++) {
+                                $i = 0;
+                                for (; $i < count($leaderBoard) - 1; $i++) {
                                     $one = $leaderBoard[$i];
                                     $number = $i + 1;
+                                    $playerName = strcmp($one->team_name, 'Solo Team') == 0 ? $one->player_name : $one->team_name;
                                     echo "<div>
                                                     <span>
-                                                        $number. $one->team_name .... $one->points
+                                                    
+                                                        $number. $playerName .... $one->points
                                                     </span>
                                                 </div>";
                                 }
+                                $one = $leaderBoard[$i];
+                                $number = $i + 1;
+                                // var_dump($one);exit;
+                                $playerName = strcmp($one->team_name, 'Solo Team') == 0 ? $one->player_name : $one->team_name;
+                                echo "<div style='margin-top:15px'>
+                                                    <span style='font-weight:bold;'>
+                                                        $playerName .... $one->points
+                                                    </span>
+                                                </div>";
                                 ?>
                             </div>
                         </div>
