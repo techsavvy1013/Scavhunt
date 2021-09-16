@@ -50,14 +50,15 @@ class Entryform extends CI_Controller
         $this->load->view("entryform.php", $data);
     }
 
-    public function direct_to_school_entry(){
+    public function direct_to_school_entry()
+    {
         $this->load->view("entryform_direct_to_school.php");
     }
 
     public function entryFormBySchool($schoolId)
     {
         $curSchoolId = $schoolId;
-        
+
         $allSchools = $this->school_model->getAllSchools();
         $strStdIdRequired = "";
         $arrStdIdRequired = array();
@@ -196,7 +197,7 @@ class Entryform extends CI_Controller
 
         //$result = $this->team_model->searchTeam(intval($step), $fullname, $schoolId, $playersNum, $teamname, $teamcaptain, $teammembers);
         $result = array();
-        
+
         // Players are playing altogether, team with more than 3 players, and unchecked in hunt checkbox
         if ($samedevice == 1 && $hunt->is_force_join == 0 && intval($playersNum) > 2) // If is_force_join is unchecked in huntinfo
         {
@@ -204,6 +205,12 @@ class Entryform extends CI_Controller
             $this->assignRoom($data["playerId"], "0", $data);
             return;
         }
+
+        // Currently, the game is only played in physical way
+        $data["team_name"] = $teamname;
+        $this->assignRoom($data["playerId"], "0", $data);
+        return;
+
         while (count($result) == 0) {
             if ($step > 3)
                 break;
@@ -303,11 +310,12 @@ class Entryform extends CI_Controller
 
         if (intval($selTeamId) == 0) {
             if (intval($assignedRoomId) == 0) {
-                if ($playersNum <= 2) {
-                    $assignedRoomId = $this->room_model->assignAutoSoloVacantRoom($zoomAccountId, $schoolId, intval($playersNum));
-                } else {
-                    $assignedRoomId = $this->room_model->assignAutoVacantRoom($zoomAccountId, $schoolId, intval($playersNum));
-                }
+                // Currently only working in physical environment so assign vacant room always
+                // if ($playersNum <= 2) {
+                // $assignedRoomId = $this->room_model->assignAutoSoloVacantRoom($zoomAccountId, $schoolId, intval($playersNum));
+                // } else {
+                $assignedRoomId = $this->room_model->assignAutoVacantRoom($zoomAccountId, $schoolId, intval($playersNum));
+                // }
             }
             if ($teamname == "" && intval($playersNum) == 1)
                 $teamname = "Solo Team";
