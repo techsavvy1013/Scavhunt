@@ -331,6 +331,7 @@ class Scavrhunts extends BaseController
             $maxTime = $this->security->xss_clean($this->input->post('maxTime'));
             $isForceJoin = $this->security->xss_clean($this->input->post('isForceJoin'));
             $doorImagePath = $this->security->xss_clean($this->input->post('doorImagePath'));
+            $moveOnWrong = $this->security->xss_clean($this->input->post('moveOnWrong'));
             
             $arr_huntlogo = $this->uploadLogo();
             $huntlogo = $arr_huntlogo[0];
@@ -358,6 +359,7 @@ class Scavrhunts extends BaseController
                     'max_time' => $maxTime,
                     'created' => $updated,
                     'is_force_join' => $isForceJoin,
+                    'move_on_wrong' => $moveOnWrong,
                     'door_image_path' => $doorImagePath
                 );
             } else {
@@ -375,6 +377,7 @@ class Scavrhunts extends BaseController
                     'max_time' => $maxTime,
                     'created' => $updated,
                     'is_force_join' => $isForceJoin,
+                    'move_on_wrong' => $moveOnWrong,
                     'door_image_path' => $doorImagePath
                 );
             }

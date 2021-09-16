@@ -13,6 +13,7 @@ $endDay = $huntInfo->end_date;
 $endTime = $huntInfo->end_time;
 $maxTime = $huntInfo->max_time;
 $isForceJoin = $huntInfo->is_force_join;
+$moveOnWrong = $huntInfo->move_on_wrong;
 $doorImagePath = $huntInfo->door_image_path;
 ?>
 <div class="content-wrapper">
@@ -162,6 +163,16 @@ $doorImagePath = $huntInfo->door_image_path;
                                     </div>
                                 </div>
                             </div> -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <br>
+                                        <input type="checkbox" value="1" onclick="setMoveOnWrong(this);" id="moveOnWrong" name="moveOnWrong">
+                                        <label for="moveOnWrong">Move forward on incorrect answer.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div><!-- /.box-body -->
 
                         <div class="box-footer">
@@ -221,6 +232,8 @@ $doorImagePath = $huntInfo->door_image_path;
     var schoolId = "<?php echo $schoolId; ?>";
     var isactive = "<?php echo $isactive; ?>";
     var isForceJoin = "<?php echo $isForceJoin; ?>";
+    var moveOnWrong = "<?php echo $moveOnWrong; ?>";
+
     jQuery(document).ready(function() {
         $("#startDay").datepicker({
             dateFormat: 'yy-mm-dd'
@@ -248,6 +261,11 @@ $doorImagePath = $huntInfo->door_image_path;
             $("#isForceJoin").attr("checked", "checked");
         else
             $("#isForceJoin").removeAttr("checked");
+
+        if (moveOnWrong == 1)
+            $("#moveOnWrong").attr("checked", "checked");
+        else
+            $("#moveOnWrong").removeAttr("checked");
     });
 
     function setHuntActive(obj) {
@@ -258,6 +276,13 @@ $doorImagePath = $huntInfo->door_image_path;
     }
 
     function setForceJoin(obj) {
+        if (obj.checked)
+            obj.value = "1";
+        else
+            obj.value = "0";
+    }
+
+    function setMoveOnWrong(obj) {
         if (obj.checked)
             obj.value = "1";
         else

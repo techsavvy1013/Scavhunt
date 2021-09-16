@@ -268,53 +268,6 @@
         Webcam.attach('#mycam');
     }
 
-    function submit_answer() {
-        var imageCaptured = $("#image_captured").val();
-        var inpAnswer = $("#inp_answer").val();
-
-        if (imageCaptured == "" || inpAnswer == "") {
-            alert("Please submit a photo or an answer.");
-            return;
-        }
-
-        var post_url = "<?php echo base_url(); ?>submitHuntAnswer";
-        $.post(
-            post_url, {
-                playerId: playerId,
-                teamId: teamId,
-                huntId: huntId,
-                challengeId: chgId,
-                imageCaptured: imageCaptured,
-                inpAnswer: inpAnswer
-            },
-            function(res) {
-                res = JSON.parse(res);
-                if (res.chgType == 2 || res.chgType == 3) {
-                    let msg = res.points ? "Correct Answer!" : "Wrong Answer!";
-                    displaySuccess(res.points ? 1 : 0, msg);
-                } else {
-                    let msg = "This challenge needs to be judged!";
-                    displaySuccess(0, msg);
-                }
-                if (!$("#submitType")[0].checked && !res.points)
-                    return;
-                setTimeout(gotoNextChallenge, 3000);
-            }
-        );
-
-    }
-
-    function gotoNextChallenge() {
-        let submitType = $("#submitType")[0].checked;
-        $("#inp_cur_chg_num").val(cur_chg_num + 1);
-        var form = $("form#answerSubmit");
-        if (cur_chg_num < chg_count - 1) {
-            form.attr("action", "<?php echo base_url(); ?>gotoHuntGame/?gc=" + gamecode + "&submitType=" + submitType);
-        } else {
-            form.attr("action", "<?php echo base_url(); ?>endHuntGame/?gc=" + gamecode + "&submitType=" + submitType);
-        }
-        form.submit();
-    }
 
     function viewFeedback(chgNum) {
         window.location = "<?php echo base_url(); ?>viewFeedback/?gc=" + gamecode + "&cn=" + chgNum;

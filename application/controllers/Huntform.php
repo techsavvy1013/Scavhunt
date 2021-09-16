@@ -44,8 +44,7 @@ class Huntform extends CI_Controller
 
         if (isset($_POST["inp_cur_chg_type"]))
             $curChgType = intval($_POST["inp_cur_chg_type"]);
-        $submitType = isset($_GET["submitType"]) ? $_GET["submitType"] : 1;
-
+        
         if ($gamecode != "")
         {
             if ($huntId != 0)
@@ -128,7 +127,6 @@ class Huntform extends CI_Controller
                                 $data['curChgNum'] = $curChgNum;
                                 $data['leaderBoard'] = $leaderBoard;
                                 $data['huntInfo'] = $huntInfo;
-                                $data['submitType'] = $submitType;
                                 $this->load->view("scavenger-hunts/huntform.php", $data);
                             }
                             else
