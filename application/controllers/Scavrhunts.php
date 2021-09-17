@@ -101,6 +101,7 @@ class Scavrhunts extends BaseController
             foreach ($huntInfos as $record) {
                 $ret[$k]["id"] = $record->id;
                 $ret[$k]["schoolname"] = $sch_name;
+                $ret[$k]["schoolid"] = $school->id;
                 $ret[$k]["headerImg"] = $record->hunt_logo2;
                 $ret[$k]["huntname"] = $record->hunt_name;
                 $ret[$k]["isactive"] = $record->is_active;

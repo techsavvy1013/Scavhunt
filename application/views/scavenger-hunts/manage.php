@@ -61,6 +61,7 @@
                         <th>Start Day/Time</th>
                         <th>End Day/Time</th>
                         <th>Maximum Time</th>
+                        <th>School Entry Form Link</th>
                         <th>Highlight Reel/Leaderboard Link</th>
                         <th>Hunt Link</th>
                         <th class="text-center">Actions</th>
@@ -83,6 +84,7 @@
                         <td><?php echo $record["startDay"] . "<br>" . $record["startTime"] ?></td>
                         <td><?php echo $record["endDay"] . "<br>" . $record["endTime"] ?></td>
                         <td><?php echo $record["maxTime"] ?></td>
+                        <td><?php echo base_url() . 'entryform/entryFormBySchool/' . $record["schoolid"] ?></td>
                         <td><?php echo base_url() . "leaderboard/" . $record["id"];?></td>
                         <td><?php echo base_url() . "gotoHunt/?hunt=" . $record["id"];?></td>
                         <td class="text-center">
@@ -107,6 +109,7 @@
                         <th>Start Day/Time</th>
                         <th>End Day/Time</th>
                         <th>Maximum Time</th>
+                        <th>School Entry Form Link</th>
                         <th>Highlight Reel/Leaderboard Link</th>
                         <th>Hunt Link</th>
                         <th class="text-center">Actions</th>
