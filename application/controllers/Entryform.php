@@ -114,6 +114,14 @@ class Entryform extends CI_Controller
         $this->session->set_userdata('schoolId', $schoolId);
 
         $recentHunts = $this->hunt_model->getActiveHuntsSortedByDate($schoolId);
+
+        if (count($recentHunts) == 0) 
+        {
+            $data['console_log'] = $schoolId;
+            $this->load->view("error_happened.php", $data);
+            return;
+        }
+
         $hunt = $recentHunts[0];
         $curDateTime = date("Y-m-d H:i:s");
         $startDateTime = $hunt->start_date . " " . $hunt->start_time;
