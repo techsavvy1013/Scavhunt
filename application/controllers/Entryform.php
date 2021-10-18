@@ -383,7 +383,15 @@ class Entryform extends CI_Controller
                     $ret[$k]["teamname"] = $teamInfo->team_name;
                     $ret[$k]["captain"] = $teamInfo->captain;
                     $ret[$k]["roomno"] = $roomInfo->room_no;
-                    $ret[$k]["gamelink"] = base_url() . "gotoHunt/?hunt=" . $data["huntInfo"]->id;
+                    $huntId = $this->session->set_userdata('huntId', $data["huntInfo"]->id);
+                    $teamId = $this->session->userdata('teamId');
+                    $gamecode = "";
+                    $gameCodeInfo = $this->hunt_model->getHuntGameCodeInfo($teamId);
+                    if (!isset($gameCodeInfo)){
+                        $gamecode = $this->getHuntGameCode($teamId);
+                    } else 
+                        $gamecode = $gameCodeInfo->gamecode;
+                    $ret[$k]["gamelink"] = base_url() . 'gotoHuntGame' . '/?gc=' . $gamecode;
                     $k++;
                 }
             }
@@ -392,5 +400,33 @@ class Entryform extends CI_Controller
         $data["roomMates"] = $ret;
         $data["teamId"] = $selTeamId;
         $this->load->view("assignedroom.php", $data);
+    }
+
+    public function generateHuntGameCode($teamId)
+    {
+        return mt_rand(100, 999) . ($teamId * 3) . mt_rand(100, 999);
+    }
+
+    public function getHuntGameCode($teamId)
+    {
+        $gamecode = "";
+        $gameCodeInfo = $this->hunt_model->getHuntGameCodeInfo($teamId);
+        if (isset($gameCodeInfo))
+            $gamecode = $gameCodeInfo->gamecode;
+        if ($gamecode == "")
+        {
+            $gamecode = $this->generateHuntGameCode($teamId);
+            while ($checksame = $this->hunt_model->getSameGameCode($gamecode))
+            {
+                $gamecode = $this->generateHuntGameCode($teamId);
+            }
+            $codeInfo = array(
+                'team_id' => $teamId,
+                'gamecode' => $gamecode,
+                'status_id' => 1
+            );
+            $result = $this->hunt_model->insertHuntGameCode($codeInfo);
+        }
+        return $gamecode;
     }
 }

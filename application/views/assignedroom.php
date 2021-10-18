@@ -45,6 +45,7 @@
                                 <th>Captain</th>
                                 <th>Room No</th>
                                 <th>Game Link</th>
+                                <th>Action</th>
                             </tr>
                             <?php
                             if(!empty($roomMates))
@@ -58,17 +59,19 @@
                                 <td><?php echo $record["teamname"] ?></td>
                                 <td><?php echo $record["captain"] ?></td>
                                 <td><?php echo $record["roomno"] ?></td>
-                                <td><a href="#" onclick="gotoURL('<?php echo $record['gamelink'] ?>')" target="_blank"><?php echo $record['gamelink'] ?></a></td>
+                                <td><a href="#" onclick="gotoURL('<?php echo $record['gamelink'] ?>')" class="" target="_blank"><?php echo $record['gamelink'] ?></a></td>
+                                <td>
+                                    <input type="hidden" class="CopyGameLink" value="<?php echo $record['gamelink'] ?>">
+                                    <Button class="btn btn-sm btn-primary CopyLink">Copy Link</Button>
+                                    <Button onclick="gotoURL('<?php echo $record['gamelink'] ?>')" class="btn btn-sm btn-success ">Start Game</Button>
+                                </td>
                             </tr>
                             <?php
                                 }
                             }
                             ?>
                         </table>
-                        <div class="gamecode-div">
-                            Game Code&nbsp;&nbsp;&nbsp;
-                            <label id="lbl_gamecode"></label>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -78,6 +81,19 @@
 </html>
 
 <script language="javascript">
+    $(document).on('click','.CopyLink',function(){
+        var link=$(this).parents('tr').children().find('.CopyGameLink').eq(0);
+        console.log(link);
+        link.select();
+        // $(link).setSelectionRange(0, 99999); 
+        navigator.clipboard.writeText(link.val());
+        alert(link.val());
+        document.execCommand("copy",false,link.val().toString());
+        
+    })
+
+
+
     displayCounter("<?php echo $hunt_status ?>", <?php echo $remainTime ?>, <?php echo json_encode($huntInfo) ?>);
 
     var teamId = eval("<?php echo $teamId; ?>");
