@@ -15,6 +15,11 @@ function displayCounter(huntStatus, remainTime, huntInfo) {
     if(huntStatus == "READY") {
         startCount(huntStatus, remainTime, huntInfo);
     }
+    else if(huntStatus == "PREPARE") {
+        msg = `This event will be started by ${huntInfo.start_date} ${huntInfo.start_time}`;
+        $(".counter-dlg strong").html(msg);
+        // startCount(huntStatus, remainTime, huntInfo);
+    }
     else if(huntStatus === "STARTED") {
         if(parseInt(remainTime/60) <= 30)
             startCount(huntStatus, remainTime, huntInfo);

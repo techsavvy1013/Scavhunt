@@ -23,6 +23,7 @@
     		color:red;
     		font-weight: normal;
     	}
+      
     </style>
     <script src="<?php echo base_url(); ?>assets/bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript">
@@ -232,6 +233,12 @@
               <a href="<?php echo base_url(); ?>schoolListing" >
                 <i class="fa fa-files-o"></i>
                 <span>Schools</span>
+              </a>
+            </li>
+            <li>
+              <a href="<?php echo base_url(); ?>allteam" >
+                <i class="fa fa-files-o"></i>
+                <span>All Teams</span>
               </a>
             </li>
             <li>

@@ -133,8 +133,8 @@
                                     $number = $i + 1;
                                     echo "<div>";
                                     echo "<span class='section_content2'>$number</span> .&nbsp;&nbsp;";
-                                    echo "<span class='section_content1'>$one->team_name</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-                                    echo "<span class='section_content2'>&nbsp;&nbsp;&nbsp;&nbsp;$one->points</span>";
+                                    echo "<span class='section_content1'>$one->team_name (".$one->room_id.")</span> .... ";
+                                    echo "<span class='section_content2'>&nbsp;$one->points</span>";
                                     echo "</div>";
                                 }
                                 ?>
@@ -154,9 +154,10 @@
                                     $one = $challengeResults[$i];
                                     $number = $i + 1;
                                     $playerName = strcmp($one->team_name, 'Solo Team') == 0 ? $one->player_name : $one->team_name;
+                                    // if ($one->points <= 0) return;
                                     echo "<div>";
                                     echo    "<span class='section_content2'>Team &nbsp; </span>";
-                                    echo    "<span class='section_content1'> $playerName </span>";
+                                    echo    "<span class='section_content1'> " . $one->team_name . " </span>";
                                     echo    "<span class='section_content2'> solves Challenge &nbsp; </span>";
                                     echo    "<span class='section_content1'> $one->chg_name </span>";
                                     echo "</div>";
@@ -209,9 +210,6 @@
         RoundInterval: 100,
         PixelPerRound: 10
     });
-
-
-
 
     var playerId = eval("<?php echo $playerId; ?>");
     var huntId = eval("<?php echo $huntId; ?>");

@@ -4,6 +4,14 @@ class Team_model extends CI_Model
 {
     private $_tablename = 'teams';
 
+    public function get_teams()
+    {
+        $this->db->selecct('*');
+        $this->db->from('teams');
+        $q = $this->db->get();
+        return $q->result();
+    }
+
     public function addNewTeam($teamInfo)
     {
         $this->db->trans_start();
@@ -156,5 +164,36 @@ class Team_model extends CI_Model
         //var_dump($wh);
         $query = $this->db->get($this->_tablename);
         return $query->result();
+    }
+
+    function teamListingCount($searchText = '')
+    {
+        $this->db->select('*');
+        $this->db->from('teams');
+        if(!empty($searchText)) {
+            $likeCriteria = "(team_name  LIKE '%".$searchText."%')";
+            $this->db->where($likeCriteria);
+        }
+        $this->db->where('room_exited ', null);
+        $query = $this->db->get();
+        
+        return $query->num_rows();
+    }
+
+    function teamListing($searchText, $page, $segment)
+    {
+        $this->db->select('*');
+        $this->db->from('teams');
+        if(!empty($searchText)) {
+            $likeCriteria = "(team_name  LIKE '%".$searchText."%')";
+            $this->db->where($likeCriteria);
+        }
+        $this->db->where('room_exited ', null);
+        $this->db->order_by('id', 'DESC');
+        $this->db->limit($page, $segment);
+        $query = $this->db->get();
+        
+        $result = $query->result();        
+        return $result;
     }
 }

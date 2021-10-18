@@ -168,6 +168,10 @@ $route['gotoHunt'] = 'huntform/assignGameCode';
 $route['submitHuntAnswer'] = 'huntform/submitAnswer';
 $route['viewFeedback'] = 'huntform/viewFeedback';
 
+// Team edit or view
+$route['allteam'] = 'TeamController/all_teams';
+$route['editteam/(:num)'] = 'TeamController/edit_teams/$1';
+$route['updateteam/(:num)'] = 'TeamController/update_team/$1';
 // leaderboard and hightlight reel
 $route['leaderboard/(:num)'] = 'huntform/showLeaderboardpage/$1';
 /* End of file routes.php */

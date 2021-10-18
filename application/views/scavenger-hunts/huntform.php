@@ -228,21 +228,20 @@
                                 for (; $i < count($leaderBoard) - 1; $i++) {
                                     $one = $leaderBoard[$i];
                                     $number = $i + 1;
-                                    $playerName = strcmp($one->team_name, 'Solo Team') == 0 ? $one->player_name : $one->team_name;
+                                    // $playerName = strcmp($one->team_name, 'Solo Team') == 0 ? $one->player_name : $one->team_name;
                                     echo "<div>
                                                     <span>
-                                                    
-                                                        $number. $playerName .... $one->points
+                                                        $number. $one->team_name ($one->room_id) .... $one->points
                                                     </span>
                                                 </div>";
                                 }
                                 $one = $leaderBoard[$i];
                                 $number = $i + 1;
                                 // var_dump($one);exit;
-                                $playerName = strcmp($one->team_name, 'Solo Team') == 0 ? $one->player_name : $one->team_name;
+                                // $playerName = strcmp($one->team_name, 'Solo Team') == 0 ? $one->player_name : $one->team_name;
                                 echo "<div style='margin-top:15px'>
                                                     <span style='font-weight:bold;'>
-                                                        $playerName .... $one->points
+                                                    $number. $one->team_name ($one->room_id) .... $one->points
                                                     </span>
                                                 </div>";
                                 ?>

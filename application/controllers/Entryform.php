@@ -90,21 +90,7 @@ class Entryform extends CI_Controller
             echo json_encode(["status" => 0, "msg" => "No Available Hunts!"]);
             return;
         }
-        $hunt = $recentHunts[0];
-        $curDateTime = date("Y-m-d H:i:s");
-        $startDateTime = $hunt->start_date . " " . $hunt->start_time;
 
-        $remainSecs = $this->common_model->calcSecondsBetweenTwoDates($curDateTime, $startDateTime);
-        if ($remainSecs / 60 > 30) {  // team/player can register the new hunt before 30 mins
-            echo json_encode(
-                [
-                    "status" => 0,
-                    "msg" => "Current Time : " . $curDateTime
-                        . "<br>New Hunt Game will be started from " . $startDateTime
-                ]
-            );
-            return;
-        }
         echo json_encode(["status" => 1, "msg" => ""]);
     }
     public function searchTeam($step = 1)
@@ -115,8 +101,7 @@ class Entryform extends CI_Controller
 
         $recentHunts = $this->hunt_model->getActiveHuntsSortedByDate($schoolId);
 
-        if (count($recentHunts) == 0) 
-        {
+        if (count($recentHunts) == 0) {
             $data['console_log'] = $schoolId;
             $this->load->view("error_happened.php", $data);
             return;
@@ -130,6 +115,8 @@ class Entryform extends CI_Controller
         $remainSecs = $this->common_model->calcSecondsBetweenTwoDates($curDateTime, $startDateTime);
         if ($remainSecs / 60 < 30 && $remainSecs / 60 > 0)
             $data["hunt_status"] = "Ready";
+        else if ($remainSecs / 60 > 30)
+            $data["hunt_status"] = "PREPARE";
         if ($remainSecs <= 0) {
             $data["hunt_status"] = "Started";
             $remainSecs = $this->common_model->calcSecondsBetweenTwoDates($curDateTime, $endDateTime);
@@ -155,14 +142,14 @@ class Entryform extends CI_Controller
         if (!isset($loggedbefore))
             $loggedbefore = 0;
 
+        $teamname = $this->security->xss_clean($this->input->post('teamname'));
         if (intval($playersNum) == 1) {
             $samedevice = "0";
-            $teamname = "Solo Team";
+            // $teamname = "Solo Team";
             $teamcaptain = "";
             $teammembers = "";
         } else {
             $samedevice = $this->security->xss_clean($this->input->post('samedevice'));
-            $teamname = $this->security->xss_clean($this->input->post('teamname'));
             $teamcaptain = $this->security->xss_clean($this->input->post('teamcaptain'));
             $teammembers = $this->security->xss_clean($this->input->post('teammembers'));
         }
@@ -325,7 +312,7 @@ class Entryform extends CI_Controller
                 $assignedRoomId = $this->room_model->assignAutoVacantRoom($zoomAccountId, $schoolId, intval($playersNum));
                 // }
             }
-            if ($teamname == "" && intval($playersNum) == 1)
+            if ($teamname == "")
                 $teamname = "Solo Team";
 
             $teamInfo = array(
